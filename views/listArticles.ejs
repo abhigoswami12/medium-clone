@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="header-container nav-flex">
+            <div class="logo-flex">
+                <a class="logo" href="#"><img src="/images/medium-logo.svg" alt="medium-logo"></a>
+                <span class="logo-text">Medium</span>
+            </div>
+            <div>
+                <ul class="nav-menu nav-flex">
+                    <li class="nav-item">
+                        <h3 class="header-name">Welcome! <br>
+                            <%= user.name %>
+                        </h3>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button" href="/articles/new">Add Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button" href="/articles/myarticles">My Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button" href="/users/logout">logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+
+    </header>
+    <main>
+        <div class="articles-container">
+            <div class="">
+                <%if(articles.length) { %>
+                <% articles.forEach(article => { %>
+                    <div class="article">
+                        <a href="/articles/<%= article.id%>">
+                            <div class="article-details">
+                                <h2 class="article-title">
+                                    <%= article.title %>
+                                </h2>
+                                <h4 class="article-author">
+                                    by <%= article.author.name%>
+                                </h4>
+                            </div>
+                        </a>
+                        <div class="view-flex">
+                            <a class="button view-btn" href="/articles/<%= article.id%>">View</a>
+
+                        </div>
+
+                    </div>
+                
+                <% })%>
+                <% } else {%>
+                <h2>no users available</h2>
+                <% }%>
+    
+            </div>
+            <a href="/articles/new">Add Articles</a>
+
+        </div>
+        
+
+    </main>
+
+
+</body>
+
+</html>

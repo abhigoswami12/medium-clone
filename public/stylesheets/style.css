@@ -1,0 +1,433 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* body {
+  font-family: "Poppins", sans-serif;
+  line-height: 1.5;
+} */
+
+
+
+body {
+  font-family: 'Nunito', sans-serif;
+    /* font-family: 'Mukta', sans-serif; */
+
+ 
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+main {
+   padding: 50px;
+}
+
+
+a {
+  color: #00B7FF;
+  text-decoration: none;
+  
+}
+.flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  max-width: 600px;
+  margin: 5rem auto;
+  text-align: center;
+  border: 1px dashed #4292DA;
+  border-radius: 8px;
+  padding: 5rem 2rem;
+}
+.index-btn {
+  padding: 0.5rem 8rem;
+  margin: 1rem 0;
+  color: black;
+  border-radius: 40px;
+  font-weight: 600;
+  letter-spacing: 0.05rem;
+  font-size: 1.1rem;
+  border: 1.5px solid #4292DA;
+  
+}
+.index-reg-btn {
+  background: #4292DA;
+  color: white;
+}
+.twitter-logo {
+  width: 50px;
+  height: 50px;;
+}
+.index-heading {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #292929;
+}
+.index-sub-heading {
+  font-size: 1.1rem;
+  font-weight: 300;
+  margin-top: -0.2rem;
+  color: #292929
+}
+
+/* login */
+.form-container {
+  max-width: 400px;
+  margin: 5rem auto;
+  text-align: center;
+  border: 1px dashed #4292DA;
+  border-radius: 8px;
+  padding: 5rem 1rem;
+}
+
+.name {
+  width: 60%; 
+  padding: 0.5rem;
+  margin-top: 2rem;
+  border: 1px solid #4292DA;
+  /* background: #4292DA; */
+  border-radius: 4px;
+  outline: 0;
+}
+
+.email {
+  width: 60%; 
+  padding: 0.5rem;
+  margin: 2rem 0;
+  border: 1px solid #4292DA;
+  /* background: #4292DA; */
+  border-radius: 4px;
+  outline: 0;
+}
+.password {
+  width: 60%; 
+  padding: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #4292DA;
+  /* background: #4292DA; */
+  border-radius: 4px;
+  outline: 0;
+}
+.email::placeholder {
+  /* color: white; */
+  font-size: 0.8rem;
+}
+legend {
+  margin-top: 1rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+.btn {
+  padding: 0.5rem 3rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.list-btn {
+  padding: 0.5rem 2rem;
+  letter-spacing: normal;
+}
+.list-login-btn {
+  margin-left: 4rem;
+  padding: 0.5rem 6rem;
+}
+.list-reg-btn {
+  padding: 0.5rem 6rem;
+}
+.list-heading {
+  margin: 4rem 0 2rem 0;
+  font-size: 2rem;
+  text-decoration: underline;
+  color: rgb(46, 44, 44)
+
+}
+.list-no-user {
+  margin: 4rem 0 2rem 0;
+  color: rgb(104, 11, 11);
+  font-size: 2rem;
+}
+.list-user {
+  color: #73C785;
+  /* color: #21396a; */
+  font-size: 1.6rem;
+}
+.list-body {
+  margin-left: 10rem;
+}
+
+/* flash */
+.flash {
+  color: red;
+}
+
+/* header */
+.nav-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+/* .nav-menu {
+  background: red;
+} */
+
+.header-container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+.logo-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-text {
+  border-left: 0.5px solid black;
+  padding-left: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.logo img {
+  width: 30px;
+  height: 30px;
+  color: #292929;
+  margin-right: 0.7rem;
+}
+.header {
+  padding: 1rem 0;
+  background: #F6F9FC;
+  border-bottom: 1px solid rgb(200, 245, 189);
+}
+.header-name {
+  color: #292929;
+  text-align: center;
+  font-weight: 600;
+  /* margin: 0.02rem 0; */
+}
+.nav-item {
+  margin-left: 1.5rem;
+}
+.button {
+  padding: 0.5rem 1rem;
+  color: rgb(245, 240, 240);
+  background: #438168;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.button:hover {
+  background: #224235;
+}
+
+/* articles */
+.articles-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.article {
+  background: #E9EEF4;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+.article a {
+  color: #438168;
+  /* color: #32325D; */
+
+}
+.article-title {
+  font-size: 2rem;
+  font-weight: 600;
+  
+}
+.article-author {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: rgb(155, 151, 146)
+}
+.article-details {
+  padding: 1rem 1.5rem;
+}
+.article-title:hover {
+  color: #224235;
+}
+.view-btn {
+  display: inline-block;
+  padding: 0.6rem 2.5rem;
+  margin: 1rem 0;
+  margin-right: 2rem;
+  color: white !important;
+}
+.view-flex {
+  display: flex;
+  /* text-align: left; */
+  justify-content: flex-end;
+}
+.my-btn {
+  background: transparent;
+  border: 1px solid #438168;
+  padding: 0.6rem 1.6rem;
+  margin-right: 1.1rem;
+  color: #438168 !important;
+}
+.my-btn:hover {
+  background: transparent;
+  border: 1px solid #292929;
+  color: #292929 !important;
+  /* color: #224235 !important; */
+  
+}
+
+/* singleArticle */
+.single-article-title {
+  font-size: 2.8rem;
+  /* font-weight: 600; */
+  
+}
+.single-article-description {
+  font-size: 1.2rem;
+  color: rgb(14, 13, 13);
+  letter-spacing: 0.03rem;
+  word-spacing: 0.1rem;
+  font-family: 'Mukta', sans-serif;
+  margin: 2.5rem 0;
+}
+.single-article-author {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: rgb(27, 26, 26);
+}
+.single-article-date {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: rgb(80, 79, 78)
+}

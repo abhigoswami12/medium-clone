@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>user login</title>
+</head>
+
+<body>
+    <div class="form-container">
+        <form class="flex" action="/users/login" method="POST">
+            <img class="twitter-logo" src="/images/medium-logo.svg" alt="Twitter-logo">
+            <legend>Log in</legend>
+            <input class="email" type="email" name="email" id="" placeholder="Enter your email">
+            <input class="password" type="password" name="password" id="" placeholder="Enter password">
+            <%if(warn) { %>
+                <p class="flash"><%= warn %></p>
+
+           <% } %>
+
+            <input class="btn index-reg-btn index-btn" type="submit" name="" id="" value="Log in">
+        </form>
+
+    </div>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</body>
+
+</html>

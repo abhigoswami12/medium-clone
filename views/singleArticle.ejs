@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="header-container nav-flex">
+            <div class="logo-flex">
+                <a class="logo" href="#"><img src="/images/medium-logo.svg" alt="medium-logo"></a>
+                <span class="logo-text">Medium</span>
+            </div>
+            <div>
+                <ul class="nav-menu nav-flex">
+                    <li class="nav-item">
+                        <h3 class="header-name">Welcome! <br>
+                            <%= user.name %>
+                        </h3>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button" href="/articles/new">Add Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button" href="/articles">All Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button" href="/articles/myarticles">My Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button" href="/users/logout">logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    
+    
+    </header>
+    <main>
+        <div class="articles-container">
+            <div class="">
+                <h2 class="single-article-title">
+                    <%= article.title%>
+                </h2>
+                <h4 class="single-article-author"><%= article.author.name%></h4>
+                <h4 class="single-article-date"><%= String(article.createdAt).slice(3, 10) %></h4>
+                <% if(article.author.id === user.id) { %>
+                    <a href="/articles/<%= article.id%>/edit">edit</a>
+
+                <% }%>
+                <%if(user.following.map(userId => userId.toString()).includes(user.id)) { %>
+                    <a href="/articles/<%= article.id%>/follow">Unfollow</a>
+
+                <% } else { %>
+                    <a href="/articles/<%= article.id%>/follow">Follow</a>
+
+                <% }%>
+                
+                <% if(article.likesArray.map(userId => userId.toString()).includes(user.id)) { %>
+                    <h4><%= article.likesArray.length%> likes</h4>
+                    <a href="/articles/<%= article.id%>/likes">Unlike</a>
+                <% } else { %> 
+                    <h4><%= article.likesArray.length%> likes</h4>
+                    <a href="/articles/<%= article.id%>/likes">Like</a>
+
+                <% }%>
+                <% if(user.favourites.map(articleId => articleId.toString()).includes(article.id)) { %>
+                    <a href="/articles/<%= article.id%>/favourites" class="favourites">remove from favourites</a>
+                <% }  else { %>
+                    <a href="/articles/<%= article.id%>/favourites" class="favourites">Add to favourites</a>
+
+               <% } %>
+                <p class="single-article-description">
+                    <%= article.description%>
+                </p>
+
+            </div>
+            <!-- comment -->
+            <form action="/articles/<%= article.id %>/comments" method="POST">
+                <input type="text" name="content" id="" placeholder="Add Comment">
+                <input type="submit" name="" id="" value="submit">
+            </form>
+            
+            <% article.comments.forEach(comment => { %>
+            <p>
+                <%= comment.content %>
+            </p>
+            <%if(comment.author.toString() === user.id) { %>
+                <a href="/comments/<%= comment.id %>/edit"><input type="submit" name="" id="" value="Edit Comment"></a>
+                <a href="/comments/<%= comment.id %>/delete"><input type="submit" name="" id="" value="Delete Comment"></a>
+            
+            <% }%>
+            <% })%>
+
+        </div>
+
+    </main>
+    <script>
+        let favourites = document.querySelector('.favourites');
+
+        function handleFavourites(event) {
+            console.log(event.target.dataset.id)
+        }
+
+
+        favourites.addEventListener('click', handleFavourites);
+    </script>
+</body>
+
+</html>

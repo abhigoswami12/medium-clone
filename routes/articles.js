@@ -14,7 +14,9 @@ router.get('/new', auth.verifyUserLogin, (req, res, next) => {
 })
 
 router.get('/', (req, res, next) => {
+    // console.log("requested sessiion", req.session)
     Article.find().populate('author', 'name email').exec((err, articles) => {
+        // console.log("responsed user",articles)
         if(err) return next(err);
         res.render('listArticles', { articles });
     })
@@ -23,7 +25,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/myarticles', auth.verifyUserLogin, (req, res, next) => {
     Article.find().populate('author', 'name email').exec((err, articles) => {
-
+        // console.log(article.author)
         res.render('myArticles', { articles });
     })
 })
@@ -64,15 +66,9 @@ router.get('/:id', (req, res, next) => {
             path: 'author',
         }
     }).exec((err, article) => {
-        // User.populate(article.comments, 'author', function (err, comments) {
             if (err) return next(err);
-            // article.comments = comments;
-            // console.log(article.comments)
-            // console.log(article)
-            // console.log("author of the article: ", article.author.id);
-            // console.log('logged in user: ', req.user.id, article.author.id != req.user.id )
+            
             res.render('singleArticle', { article, warn })
-        // })
 
     })
 })

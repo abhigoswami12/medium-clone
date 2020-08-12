@@ -23,9 +23,12 @@
                 <ul class="nav-menu nav-flex">
                     <%if(user) { %>
                         <li class="nav-item">
-                            <h3 class="header-name">Welcome! <br>
-                                <%= user.name %>
-                            </h3>
+                            <% if(user.name) { %>
+                                <h3 class="header-name">Welcome! <br>
+                                    <%= user.name %>
+                                </h3>
+
+                            <% }%> 
                         </li>
                         <li class="nav-item">
                             <a class="button" href="/articles/new">Add Articles</a>
@@ -52,6 +55,7 @@
 
     </header>
     <main>
+       
         <div class="articles-container">
             <div class="">
                 <%if(articles.length) { %>
@@ -63,15 +67,14 @@
                                     <%= article.title %>
                                 </h2>
                                 <h4 class="article-author">
-                                    by <%= article.author.name%>
+                                    by
+                                    <%= article.author.name%>
                                 </h4>
                             </div>
                         </a>
                         <div class="view-flex">
                             <a class="button view-btn" href="/articles/<%= article.id%>">View</a>
-
                         </div>
-
                     </div>
                 
                 <% })%>

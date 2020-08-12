@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     name: {
         type: String,
-        required: true,
+        // required: true,
     },
     email: {
         type: String,
@@ -16,11 +16,21 @@ var userSchema = new Schema({
     },
     password: {
         type: String,
-        required: true,
+        // required: true,
         // min: 8
     },
     favourites: [ { type: Schema.Types.ObjectId, ref: "Article" } ],
-    following: [{ type: Schema.Types.ObjectId, ref: "User" } ]
+    following: [{ type: Schema.Types.ObjectId, ref: "User" } ],
+    github: {
+        name: String,
+        username: String,
+        image: String
+    },
+    google: {
+        name: String,
+        image: String
+    },
+    providers: [String]
 }, { timestamps: true });
 
 userSchema.pre('save', function(next) {

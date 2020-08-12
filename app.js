@@ -6,6 +6,8 @@ var logger = require('morgan');
 var session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
+var mongoose = require("mongoose");
+var passport = require('passport');
 
 // var session = require("express-session");
 var indexRouter = require('./routes/index');
@@ -14,8 +16,8 @@ var articlesRouter = require('./routes/articles');
 var commentsRouter = require('./routes/comments');
 var auth = require('./middlewares/auth');
 
-
-var mongoose = require("mongoose");
+require('dotenv').config();
+require('./modules/passport')
 
 mongoose.connect(
   "mongodb://localhost/medium-clone-app",
@@ -38,13 +40,16 @@ app.use(cookieParser());
 
 
 app.use(session({
-  secret: "sdfdghggfdsa",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false,
   // store: new MongoStore(options)
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 

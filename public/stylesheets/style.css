@@ -291,6 +291,7 @@ legend {
   color: red;
 }
 
+
 /* header */
 .nav-flex {
   display: flex;
@@ -430,4 +431,9 @@ legend {
   margin-top: 0.5rem;
   font-size: 0.8rem;
   color: rgb(80, 79, 78)
+}
+.single-article-flash-msg {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
 }

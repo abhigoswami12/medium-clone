@@ -21,14 +21,14 @@ router.get('/', (req, res, next) => {
 })
 
 
-router.get('/myarticles', (req, res, next) => {
+router.get('/myarticles', auth.verifyUserLogin, (req, res, next) => {
     Article.find().populate('author', 'name email').exec((err, articles) => {
 
         res.render('myArticles', { articles });
     })
 })
 //post
-router.post('/', (req, res, next) => {
+router.post('/',auth.verifyUserLogin, (req, res, next) => {
     req.body.author = req.user._id;
     Article.create(req.body, (err, article) => {
         if (err) return next(err);
@@ -36,19 +36,55 @@ router.post('/', (req, res, next) => {
     });
    
 })
+//METHOD-1
+//read single article
+// router.get('/:id', (req, res, next) => {
+//     var articleId = req.params.id;
+//     var warn = req.flash('warn')[0];//array
+//     Article.findById(articleId).populate("author", 'name email').populate('comments').lean().exec((err, article) => { 
+//         User.populate(article.comments, 'author', function(err, comments) {
+//             if (err) return next(err);
+//             article.comments = comments;
+//             // console.log(article.comments)
+//             res.render('singleArticle', { article, warn })
+//         })
+       
+//     })
+// })
 
+
+//METHOD-2
 //read single article
 router.get('/:id', (req, res, next) => {
     var articleId = req.params.id;
-    Article.findById(articleId).populate("author", 'name email').populate('comments').exec((err, article) => {
-        if (err) return next(err);
-        res.render('singleArticle', { article })
+    var warn = req.flash('warn')[0];//array
+    Article.findById(articleId).populate("author", 'name email').populate({
+        path: 'comments',
+        populate: {
+            path: 'author',
+        }
+    }).exec((err, article) => {
+        // User.populate(article.comments, 'author', function (err, comments) {
+            if (err) return next(err);
+            // article.comments = comments;
+            // console.log(article.comments)
+            // console.log(article)
+            // console.log("author of the article: ", article.author.id);
+            // console.log('logged in user: ', req.user.id, article.author.id != req.user.id )
+            res.render('singleArticle', { article, warn })
+        // })
+
     })
 })
 
 //create comment
 router.post('/:id/comments', (req, res, next) => {
     var articleId = req.params.id;
+    // console.log("REQUESTED USER", req.user);
+    if(req.user === null) {
+        req.flash("warn", `*Warning!! You First Need to Login to Access "Comments"!!`);
+        return res.redirect("/articles/" + articleId);
+    }
     req.body.articleId = articleId;
     req.body.author = req.user.id;
     Comment.create(req.body, (err, comment) => {
@@ -61,7 +97,7 @@ router.post('/:id/comments', (req, res, next) => {
 })
 
 //update article
-router.get('/:id/edit', (req, res, next) => {
+router.get('/:id/edit',auth.verifyUserLogin, (req, res, next) => {
     var articleId = req.params.id;
     Article.findById(articleId, (err, article) => {
         if(err) return next(err);
@@ -73,7 +109,7 @@ router.get('/:id/edit', (req, res, next) => {
     })
 })
 
-router.post('/:id/edit', (req, res, next) => {
+router.post('/:id/edit',auth.verifyUserLogin, (req, res, next) => {
     var articleId = req.params.id;
     Article.findById(articleId, (err, article) => {
         if (err) return next(err);
@@ -91,7 +127,7 @@ router.post('/:id/edit', (req, res, next) => {
 
 
 //delete aritcle
-router.get('/:id/delete', (req, res, next) => {
+router.get('/:id/delete',auth.verifyUserLogin, (req, res, next) => {
     Article.findById(req.params.id, (err, article) => {
         if (err) return next(err);
         if(article.author.toString() === req.user.id) {
@@ -107,6 +143,10 @@ router.get('/:id/delete', (req, res, next) => {
 //likes
 router.get('/:id/likes', (req, res, next) => {
     let articleId = req.params.id;
+    if (req.user === null) {
+        req.flash("warn", `*Warning!! You First Need to Login to Access "Likes"!!`);
+        return res.redirect("/articles/" + articleId);
+    }
     Article.findById(articleId,(err, article) => {
         // var likesArrayList = article.likesArray.map(userId => userId.toString());
         if (!article.likesArray.includes(req.user.id)) {
@@ -119,7 +159,7 @@ router.get('/:id/likes', (req, res, next) => {
             article.likes = article.likes - 1;
             article.save();
         }
-        console.log(article)
+        // console.log(article)
         res.redirect("/articles/" + articleId);
     })
 })
@@ -139,6 +179,12 @@ router.get('/:id/likes', (req, res, next) => {
 //favourites
 router.get('/:id/favourites', (req, res, next) => {
     let articleId = req.params.id;
+    console.log("ARTICLeID: ", articleId)
+    console.log("Loggedin user: ", req.user.id)
+    if (req.user === null) {
+        req.flash("warn", `*Warning!! You First Need to Login to Access "Favourites"!!`);
+        return res.redirect("/articles/" + articleId);
+    }
     User.findById(req.user.id, (err, user) => {
         var favouritesList = user.favourites.map(articleId => articleId.toString());
         if(!favouritesList.includes(articleId)) {
@@ -149,7 +195,8 @@ router.get('/:id/favourites', (req, res, next) => {
             user.favourites.pull(articleId);
             user.save();
         }
-            res.redirect("/articles/" + articleId);
+        console.log("USER", user);
+        res.redirect("/articles/" + articleId);
     })
     
 
@@ -158,16 +205,35 @@ router.get('/:id/favourites', (req, res, next) => {
 //follow
 router.get('/:id/follow', (req, res, next) => {
     let articleId = req.params.id;
-    User.findById(req.user.id, (err, user) => {
-        var followingList = user.following.map(userId => userId.toString());
-        if(!followingList.includes(req.user.id)) {
-            user.following.push(req.user.id);
-            user.save();
-        } else {
-            user.following.pull(req.user.id);
-            user.save();
-        }
-        res.redirect("/articles/" + articleId);
+    if (req.user === null) {
+        req.flash("warn", `*Warning!! You First Need to Login to Access "Follow"!!`);
+        return res.redirect("/articles/" + articleId);
+    }
+    Article.findById(articleId, (err, article) => {
+        console.log("Author of the ARTICLe: ", article.author)
+        console.log(
+          "Loggedin user: ",
+          req.user.id,
+          article.author != req.user.id
+        );
+        User.findById(req.user.id, (err, user) => {
+            if(article.author != req.user.id) {
+                var followingList = user.following.map(userId => userId.toString());
+                if (!followingList.includes(article.author)) {
+                    user.following.push(article.author);
+                    user.save();
+                } else {
+                    user.following.pull(article.author);
+                    user.save();
+                }
+                console.log("USER", user)
+                res.redirect("/articles/" + articleId);
+            } else {
+                console.log("USER", user);
+                return;
+            }
+        })
+
     })
 })
 

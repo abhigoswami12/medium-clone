@@ -62,7 +62,8 @@ router.post('/login', (req, res, next) => {
 
     req.session.userId = user.id;
     // console.log("requested", req.session)
-    res.redirect("/articles");
+    res.redirect(req.session.returnsTo || "/articles");
+    delete req.session.returnsTo;
   })
 })
 

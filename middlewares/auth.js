@@ -4,6 +4,8 @@ exports.verifyUserLogin = (req, res, next) => {
     if(req.session && req.session.userId) {
         next();
     } else {
+        req.session.returnsTo = req.originalUrl;
+        req.flash("warn", "You need to first login to access this route");
         res.redirect('/users/login');
     }
 

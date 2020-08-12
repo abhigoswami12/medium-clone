@@ -21,24 +21,39 @@
             </div>
             <div>
                 <ul class="nav-menu nav-flex">
-                    <li class="nav-item">
-                        <h3 class="header-name">Welcome! <br>
-                            <%= user.name %>
-                        </h3>
-                    </li>
-                    <li class="nav-item">
-                        <a class="button" href="/articles/new">Add Articles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="button" href="/articles">All Articles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="button" href="/articles/myarticles">My Articles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="button" href="/users/logout">logout</a>
-                    </li>
-                </ul>
+                    <%if(user) { %>
+                        <li class="nav-item">
+                            <h3 class="header-name">Welcome! <br>
+                                <%= user.name %>
+                            </h3>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/articles/new">Add Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/articles">All Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/articles/myarticles">My Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/users/logout">logout</a>
+                        </li>
+                    </ul>
+                    <% } else {%>
+                        <li class="nav-item">
+                            <a class="button" href="/articles/new">Add Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/articles">All Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/users/login">login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/users/register">signup</a>
+                        </li>
+                    <% }%>
             </div>
         </nav>
     
@@ -46,44 +61,61 @@
     </header>
     <main>
         <div class="articles-container">
+
             <div class="">
+                <!-- flash message -->
+                <% if(warn) { %>
+                <p class="flash single-article-flash-msg">
+                    <%= warn %>
+                </p>
+                
+                <% } %>
                 <h2 class="single-article-title">
                     <%= article.title%>
                 </h2>
                 <h4 class="single-article-author"><%= article.author.name%></h4>
                 <h4 class="single-article-date"><%= String(article.createdAt).slice(3, 10) %></h4>
-                <% if(article.author.id === user.id) { %>
-                    <a href="/articles/<%= article.id%>/edit">edit</a>
-
-                <% }%>
-                <%if(user.following.map(userId => userId.toString()).includes(user.id)) { %>
-                    <a href="/articles/<%= article.id%>/follow">Unfollow</a>
-
-                <% } else { %>
+                <%if(user) { %>
+                    <% if(article.author.id === user.id) { %>
+                        <a href="/articles/<%= article.id%>/edit">edit</a>
+    
+                        <% }%>
+                    <%if(user.following.map(userId => userId.toString()).includes(article.author.id) && article.author.id != user.id) { %>
+                        <a href="/articles/<%= article.id%>/follow">Unfollow</a>
+    
+                    <% } else if(article.author.id != user.id) { %>
+                        <a href="/articles/<%= article.id%>/follow">Follow</a>
+    
+                    <% }%>
+                    <% if(article.likesArray.map(userId => userId.toString()).includes(user.id)) { %>
+                        <h4><%= article.likesArray.length%> likes</h4>
+                        <a href="/articles/<%= article.id%>/likes">Unlike</a>
+                    <% } else { %> 
+                        <h4><%= article.likesArray.length%> likes</h4>
+                        <a href="/articles/<%= article.id%>/likes">Like</a>
+    
+                    <% }%>
+                    <% if(user.favourites.map(articleId => articleId.toString()).includes(article.id)) { %>
+                        <a href="/articles/<%= article.id%>/favourites" class="favourites">remove from favourites</a>
+                    <% }  else { %>
+                        <a href="/articles/<%= article.id%>/favourites" class="favourites">Add to favourites</a>
+    
+                   <% } %>
+                <%} else { %>
                     <a href="/articles/<%= article.id%>/follow">Follow</a>
+                    <h4><%= article.likesArray.length%> likes</h4>
+                    <a href="/articles/<%= article.id%>/likes">Like</a>
+                    <a href="/articles/<%= article.id%>/favourites" class="favourites">Add to favourites</a>
 
                 <% }%>
                 
-                <% if(article.likesArray.map(userId => userId.toString()).includes(user.id)) { %>
-                    <h4><%= article.likesArray.length%> likes</h4>
-                    <a href="/articles/<%= article.id%>/likes">Unlike</a>
-                <% } else { %> 
-                    <h4><%= article.likesArray.length%> likes</h4>
-                    <a href="/articles/<%= article.id%>/likes">Like</a>
-
-                <% }%>
-                <% if(user.favourites.map(articleId => articleId.toString()).includes(article.id)) { %>
-                    <a href="/articles/<%= article.id%>/favourites" class="favourites">remove from favourites</a>
-                <% }  else { %>
-                    <a href="/articles/<%= article.id%>/favourites" class="favourites">Add to favourites</a>
-
-               <% } %>
                 <p class="single-article-description">
                     <%= article.description%>
                 </p>
 
             </div>
             <!-- comment -->
+            
             <form action="/articles/<%= article.id %>/comments" method="POST">
                 <input type="text" name="content" id="" placeholder="Add Comment">
                 <input type="submit" name="" id="" value="submit">
@@ -93,26 +125,30 @@
             <p>
                 <%= comment.content %>
             </p>
-            <%if(comment.author.toString() === user.id) { %>
-                <a href="/comments/<%= comment.id %>/edit"><input type="submit" name="" id="" value="Edit Comment"></a>
-                <a href="/comments/<%= comment.id %>/delete"><input type="submit" name="" id="" value="Delete Comment"></a>
+            <h4 class="single-article-author">
+                commented by <%= comment.author.name%>
+            </h4>
+            <h4 class="single-article-date">
+                created on <%= String(comment.createdAt).slice(3, 10) %>
+            </h4>
             
-            <% }%>
+            <% if(user) { %>
+                <%if(comment.author.id === user.id) { %>
+                    <a href="/comments/<%= comment.id %>/edit"><input type="submit" name="" id="" value="Edit Comment"></a>
+                    <a href="/comments/<%= comment.id %>/delete"><input type="submit" name="" id="" value="Delete Comment"></a>
+                
+                <% }%>
+                <%if(article.author.id === user.id) { %>
+                <a href="/comments/<%= comment.id %>/delete"><input type="submit" name="" id="" value="Delete Comment"></a>
+                
+                <% }%>
+
+            <% } %>
             <% })%>
 
         </div>
 
     </main>
-    <script>
-        let favourites = document.querySelector('.favourites');
-
-        function handleFavourites(event) {
-            console.log(event.target.dataset.id)
-        }
-
-
-        favourites.addEventListener('click', handleFavourites);
-    </script>
 </body>
 
 </html>

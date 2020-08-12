@@ -21,20 +21,30 @@
             </div>
             <div>
                 <ul class="nav-menu nav-flex">
-                    <li class="nav-item">
-                        <h3 class="header-name">Welcome! <br>
-                            <%= user.name %>
-                        </h3>
-                    </li>
-                    <li class="nav-item">
-                        <a class="button" href="/articles/new">Add Articles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="button" href="/articles/myarticles">My Articles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="button" href="/users/logout">logout</a>
-                    </li>
+                    <%if(user) { %>
+                        <li class="nav-item">
+                            <h3 class="header-name">Welcome! <br>
+                                <%= user.name %>
+                            </h3>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/articles/new">Add Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/articles/myarticles">My Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/users/logout">logout</a>
+                        </li>
+
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a class="button" href="/users/login">login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/users/register">signup</a>
+                        </li>
+                    <% }%>
                 </ul>
             </div>
         </nav>
